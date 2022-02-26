@@ -47,7 +47,7 @@ class _CountryPageState extends State<CountryPage> {
       ),
       body:BlocBuilder<CountryBloc, CountryState>(
           builder: (BuildContext context, CountryState state){
-             return state.countryList != null ?
+             return state.isLoading == false ?
              state.countryList!.isNotEmpty ? ListView.builder(
                  itemCount: state.countryList!.length,
                  itemBuilder: (context, index){

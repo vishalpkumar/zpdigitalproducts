@@ -21,6 +21,7 @@ class CountryBloc extends Bloc<CountryEvent, CountryState>{
 
     if(event is FetchCountryList){
       countryList = [];
+      yield state.copyWith(isLoading: true);
       yield state.copyWith(countryList: countryList);
       String query =  graphqlQuery.country();
       var res =  await services.postGraphqlQuery(url: API.COUNTRY_LIST, query: query);
@@ -29,8 +30,10 @@ class CountryBloc extends Bloc<CountryEvent, CountryState>{
           countryList =  fromJsonToCountry(res['data']['countries']);
           yield state.copyWith(countryList: countryList);
           yield state.copyWith(countrySearchList: countryList);
+          yield state.copyWith(isLoading: false);
         }
       }else{
+        yield state.copyWith(isLoading: false);
         Fluttertoast.showToast(
             msg: Constant.someThingWentWrong,
             toastLength: Toast.LENGTH_SHORT,
