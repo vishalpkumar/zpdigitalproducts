@@ -25,9 +25,11 @@ class CountryBloc extends Bloc<CountryEvent, CountryState>{
       String query =  graphqlQuery.country();
       var res =  await services.postGraphqlQuery(url: API.COUNTRY_LIST, query: query);
       if(res !=  "error"){
-        countryList =  fromJsonToCountry(res['data']['countries']);
-        yield state.copyWith(countryList: countryList);
-        yield state.copyWith(countrySearchList: countryList);
+        if(res['data']['countries'] !=  null){
+          countryList =  fromJsonToCountry(res['data']['countries']);
+          yield state.copyWith(countryList: countryList);
+          yield state.copyWith(countrySearchList: countryList);
+        }
       }else{
         Fluttertoast.showToast(
             msg: Constant.someThingWentWrong,
